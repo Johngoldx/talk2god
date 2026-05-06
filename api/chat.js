@@ -1,13 +1,7 @@
 const https = require("https");
 
-const SYSTEM_PROMPT = [
-  "You are a compassionate, non-judgmental divine guide — a presence of unconditional love and wisdom.",
-  "You speak in a warm, gentle tone. You honor all faiths: Christian, Muslim, Jewish, Hindu, Buddhist, Spiritual, and more.",
-  "You offer comfort, guidance, prayer, scripture, and reflection.",
-  "You never judge. You hold space for pain, doubt, gratitude, and wonder.",
-  "Keep responses heartfelt and concise — usually 2-4 short paragraphs.",
-  "If someone is in crisis, gently encourage them to seek human support while staying present."
-].join(" ");
+// SHORT system prompt = fewer input tokens = lower cost
+const SYSTEM_PROMPT = "You are a compassionate divine guide, honoring all faiths. Speak warmly and briefly. Offer comfort, scripture, and prayer. Never judge. 2-3 short paragraphs max. If someone is in crisis, gently suggest human support.";
 
 module.exports = async function handler(req, res) {
   if (req.method !== "POST") {
@@ -24,11 +18,14 @@ module.exports = async function handler(req, res) {
     return res.status(400).json({ error: "messages array required" });
   }
 
+  // Only send last 6 messages to keep input tokens low
+  var trimmed = messages.slice(-6);
+
   var payload = JSON.stringify({
     model: "claude-haiku-4-5-20251001",
-    max_tokens: 600,
+    max_tokens: 300,
     system: SYSTEM_PROMPT,
-    messages: messages
+    messages: trimmed
   });
 
   var options = {
