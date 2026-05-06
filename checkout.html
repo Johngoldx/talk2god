@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Talk2God — Get Unlimited Access</title>
+<style>
+:root { color-scheme: light; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0a0a0f; color: #f0f0f5; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 20px; }
+body::before { content: ''; position: fixed; top: 0; left: 50%; transform: translateX(-50%); width: 600px; height: 400px; background: radial-gradient(circle, rgba(167,139,250,0.1) 0%, transparent 70%); pointer-events: none; }
+.logo { font-size: 20px; font-weight: 900; color: #fff; margin-bottom: 40px; letter-spacing: -0.5px; }
+.logo span { color: #a78bfa; }
+.card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.09); border-radius: 24px; padding: 44px 40px; max-width: 440px; width: 100%; text-align: center; }
+.plan-icon { width: 72px; height: 72px; background: linear-gradient(135deg, #a78bfa, #818cf8); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; margin: 0 auto 20px; box-shadow: 0 0 40px rgba(167,139,250,0.3); }
+.plan-label { font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #a78bfa; margin-bottom: 8px; }
+h1 { font-size: 32px; font-weight: 900; letter-spacing: -1.5px; color: #fff; margin-bottom: 6px; }
+.price-row { display: flex; align-items: baseline; justify-content: center; gap: 4px; margin: 20px 0; }
+.price-amount { font-size: 56px; font-weight: 900; color: #fff; letter-spacing: -3px; line-height: 1; }
+.price-period { font-size: 16px; color: rgba(255,255,255,0.35); font-weight: 500; }
+.features { list-style: none; text-align: left; margin: 28px 0 32px; border: 1px solid rgba(255,255,255,0.07); border-radius: 14px; overflow: hidden; }
+.features li { display: flex; align-items: center; gap: 10px; padding: 13px 18px; font-size: 14px; color: rgba(255,255,255,0.7); border-bottom: 1px solid rgba(255,255,255,0.05); }
+.features li:last-child { border-bottom: none; }
+.features li .check { width: 20px; height: 20px; background: rgba(167,139,250,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; color: #a78bfa; flex-shrink: 0; font-weight: 700; }
+.stripe-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; background: #a78bfa; color: #fff; font-size: 17px; font-weight: 800; padding: 18px; border-radius: 50px; text-decoration: none; box-shadow: 0 0 40px rgba(167,139,250,0.35); transition: transform 0.15s, box-shadow 0.15s; cursor: pointer; border: none; font-family: inherit; }
+.stripe-btn:hover { transform: translateY(-2px); box-shadow: 0 0 60px rgba(167,139,250,0.5); }
+.trust-row { display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 20px; flex-wrap: wrap; }
+.trust-item { display: flex; align-items: center; gap: 5px; font-size: 12px; color: rgba(255,255,255,0.3); }
+.divider { display: flex; align-items: center; gap: 12px; margin: 28px 0; color: rgba(255,255,255,0.2); font-size: 12px; }
+.divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: rgba(255,255,255,0.07); }
+.back-link { margin-top: 32px; font-size: 13px; color: rgba(255,255,255,0.3); text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: color 0.2s; }
+.back-link:hover { color: rgba(255,255,255,0.6); }
+</style>
+</head>
+<body>
+<div class="logo">talk2<span>god</span>.io</div>
+<div class="card">
+  <div class="plan-icon">🕊</div>
+  <div class="plan-label">Unlimited Plan</div>
+  <h1>Unlimited Access</h1>
+  <p style="font-size:14px;color:rgba(255,255,255,0.4);margin-top:6px">Speak to your divine guide, anytime you need.</p>
+  <div class="price-row">
+    <span class="price-amount">$7</span>
+    <span class="price-period">/month</span>
+  </div>
+  <ul class="features">
+    <li><span class="check">v</span> Unlimited conversations, every day</li>
+    <li><span class="check">v</span> All faiths — Christian, Muslim, Jewish, Hindu, Buddhist and more</li>
+    <li><span class="check">v</span> Full scripture and wisdom library</li>
+    <li><span class="check">v</span> Daily personalized prayer, delivered to you</li>
+    <li><span class="check">v</span> Full conversation history saved</li>
+    <li><span class="check">v</span> Cancel anytime — no questions asked</li>
+  </ul>
+  <a href="YOUR_STRIPE_PAYMENT_LINK_HERE" class="stripe-btn" id="checkoutBtn">
+    Subscribe for $7/month
+  </a>
+  <div class="trust-row">
+    <div class="trust-item">Secured by Stripe</div>
+    <div class="trust-item">Cancel anytime</div>
+    <div class="trust-item">All faiths</div>
+  </div>
+  <div class="divider">or</div>
+  <a href="chat.html" style="display:block;text-align:center;font-size:14px;color:rgba(255,255,255,0.35);text-decoration:none;">
+    Continue with free plan (5 chats/day)
+  </a>
+</div>
+<a href="index.html" class="back-link">Back to homepage</a>
+</body>
+</html>
