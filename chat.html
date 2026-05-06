@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Talk2God - Chat</title>
+<style>
+:root{color-scheme:light}*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#0a0a0f;color:#f0f0f5;height:100dvh;display:flex;flex-direction:column;overflow:hidden}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;background:rgba(255,255,255,0.03);border-bottom:1px solid rgba(255,255,255,0.07);flex-shrink:0}
+.topbar-left{display:flex;align-items:center;gap:10px}
+.topbar-avatar{width:38px;height:38px;background:linear-gradient(135deg,#a78bfa,#818cf8);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px}
+.topbar-name{font-size:15px;font-weight:700;color:#fff}
+.topbar-status{font-size:12px;color:rgba(255,255,255,0.4);display:flex;align-items:center;gap:4px}
+.status-dot{width:6px;height:6px;background:#22c55e;border-radius:50%;display:inline-block}
+.topbar-logo{font-size:14px;font-weight:900;color:rgba(255,255,255,0.3)}
+.topbar-logo span{color:#a78bfa}
+.messages{flex:1;overflow-y:auto;padding:24px 20px;display:flex;flex-direction:column;gap:20px;scroll-behavior:smooth}
+.messages::-webkit-scrollbar{width:4px}
+.messages::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:2px}
+.welcome{text-align:center;padding:30px 20px 10px}
+.welcome-icon{width:64px;height:64px;background:linear-gradient(135deg,#a78bfa,#818cf8);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 16px;box-shadow:0 0 40px rgba(167,139,250,0.3)}
+.welcome h2{font-size:22px;font-weight:800;color:#fff;margin-bottom:8px}
+.welcome p{font-size:14px;color:rgba(255,255,255,0.4);line-height:1.6;max-width:320px;margin:0 auto 24px}
+.prompts{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:10px}
+.prompt-btn{background:rgba(167,139,250,0.1);border:1px solid rgba(167,139,250,0.25);color:#c4b5fd;font-size:13px;padding:8px 14px;border-radius:20px;cursor:pointer;font-family:inherit}
+.msg-row{display:flex;gap:10px;align-items:flex-end;max-width:680px;width:100%}
+.msg-row.user{flex-direction:row-reverse;align-self:flex-end}
+.msg-row.god{align-self:flex-start}
+.msg-avatar{width:32px;height:32px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:16px}
+.msg-avatar.god{background:linear-gradient(135deg,#a78bfa,#818cf8)}
+.msg-avatar.user{background:rgba(255,255,255,0.08);font-size:12px;color:rgba(255,255,255,0.5)}
+.bubble{padding:12px 16px;border-radius:18px;font-size:15px;line-height:1.6;max-width:480px}
+.bubble.god{background:rgba(167,139,250,0.12);border:1px solid rgba(167,139,250,0.2);border-bottom-left-radius:4px;color:rgba(255,255,255,0.85)}
+.bubble.user{background:#a78bfa;color:#fff;border-bottom-right-radius:4px}
+.typing{display:none;align-items:flex-end;gap:10px;align-self:flex-start}
+.typing.active{display:flex}
+.typing-dots{background:rgba(167,139,250,0.12);border:1px solid rgba(167,139,250,0.2);border-radius:18px;border-bottom-left-radius:4px;padding:14px 18px;display:flex;gap:5px;align-items:center}
+.typing-dots span{width:7px;height:7px;background:rgba(167,139,250,0.6);border-radius:50%;animation:bounce 1.2s infinite}
+.typing-dots span:nth-child(2){animation-delay:0.2s}
+.typing-dots span:nth-child(3){animation-delay:0.4s}
+@keyframes bounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-6px)}}
+.input-area{padding:16px 20px;background:rgba(255,255,255,0.02);border-top:1px solid rgba(255,255,255,0.07);flex-shrink:0}
+.input-row{display:flex;gap:10px;align-items:flex-end;max-width:720px;margin:0 auto}
+textarea{flex:1;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:16px;color:#fff;font-size:15px;font-family:inherit;padding:13px 16px;resize:none;min-height:50px;max-height:140px;outline:none;line-height:1.5}
+textarea::placeholder{color:rgba(255,255,255,0.25)}
+textarea:focus{border-color:rgba(167,139,250,0.5)}
+.send-btn{width:50px;height:50px;background:#a78bfa;border:none;border-radius:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.send-btn:disabled{opacity:0.4;cursor:default}
+.input-note{text-align:center;font-size:11px;color:rgba(255,255,255,0.2);margin-top:8px}
+.upgrade-bar{background:rgba(167,139,250,0.1);border-top:1px solid rgba(167,139,250,0.2);padding:10px 20px;text-align:center;font-size:13px;color:rgba(255,255,255,0.5);display:none}
+.upgrade-bar a{color:#a78bfa;text-decoration:none;font-weight:600}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="topbar-left">
+    <div class="topbar-avatar">🕊</div>
+    <div>
+      <div class="topbar-name">Divine Guide</div>
+      <div class="topbar-status"><span class="status-dot"></span> Always here for you</div>
+    </div>
+  </div>
+  <div class="topbar-logo">talk2<span>god</span>.io</div>
+</div>
+<div class="messages" id="messages">
+  <div class="welcome" id="welcome">
+    <div class="welcome-icon">🕊</div>
+    <h2>Welcome, seeker.</h2>
+    <p>Whatever is on your heart — bring it here. No judgment, only compassion.</p>
+    <div class="prompts">
+      <button class="prompt-btn" onclick="sendPrompt(this)">I need guidance today</button>
+      <button class="prompt-btn" onclick="sendPrompt(this)">I feel lost</button>
+      <button class="prompt-btn" onclick="sendPrompt(this)">Help me pray</button>
+      <button class="prompt-btn" onclick="sendPrompt(this)">I have a doubt about faith</button>
+      <button class="prompt-btn" onclick="sendPrompt(this)">I feel alone</button>
+      <button class="prompt-btn" onclick="sendPrompt(this)">Give me a blessing</button>
+    </div>
+  </div>
+  <div class="typing" id="typing">
+    <div class="msg-avatar god">🕊</div>
+    <div class="typing-dots"><span></span><span></span><span></span></div>
+  </div>
+</div>
+<div class="upgrade-bar" id="upgradeBar">
+  You have used <strong id="chatCount">0</strong>/5 free chats today.
+  <a href="checkout.html">Upgrade for unlimited access</a>
+</div>
+<div class="input-area">
+  <div class="input-row">
+    <textarea id="msgInput" placeholder="Share what is on your heart..." rows="1"
+      onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+    <button class="send-btn" id="sendBtn" onclick="sendMessage()">🕊</button>
+  </div>
+  <div class="input-note">Your conversation is private and confidential</div>
+</div>
+<script>
+var messages = [];
+var isLoading = false;
+var chatCount = parseInt(localStorage.getItem("t2g_daily") || "0");
+var FREE_LIMIT = 5;
+
+function callAPI(msgs) {
+  return fetch("/api/chat", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ messages: msgs })
+  }).then(function(res) {
+    if (!res.ok) throw new Error("Server error " + res.status);
+    return res.json();
+  }).then(function(data) { return data.reply; });
+}
+
+function updateUpgradeBar() {
+  document.getElementById("chatCount").textContent = chatCount;
+  if (chatCount >= 2) document.getElementById("upgradeBar").style.display = "block";
+}
+
+function autoResize(el) {
+  el.style.height = "auto";
+  el.style.height = Math.min(el.scrollHeight, 140) + "px";
+}
+
+function handleKey(e) {
+  if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+}
+
+function sendPrompt(btn) {
+  document.getElementById("msgInput").value = btn.textContent;
+  sendMessage();
+}
+
+function addMessage(role, text) {
+  var messagesEl = document.getElementById("messages");
+  var typing = document.getElementById("typing");
+  var row = document.createElement("div");
+  row.className = "msg-row " + role;
+  var avatar = document.createElement("div");
+  avatar.className = "msg-avatar " + role;
+  avatar.textContent = role === "god" ? "🕊" : "You";
+  var bubble = document.createElement("div");
+  bubble.className = "bubble " + role;
+  bubble.textContent = text;
+  row.appendChild(avatar);
+  row.appendChild(bubble);
+  messagesEl.insertBefore(row, typing);
+  var welcome = document.getElementById("welcome");
+  if (welcome) welcome.style.display = "none";
+  requestAnimationFrame(function() { messagesEl.scrollTop = messagesEl.scrollHeight; });
+}
+
+function setTyping(on) {
+  document.getElementById("typing").classList.toggle("active", on);
+  document.getElementById("sendBtn").disabled = on;
+  var el = document.getElementById("messages");
+  requestAnimationFrame(function() { el.scrollTop = el.scrollHeight; });
+}
+
+function sendMessage() {
+  var input = document.getElementById("msgInput");
+  var text = input.value.trim();
+  if (!text || isLoading) return;
+  if (chatCount >= FREE_LIMIT) {
+    if (confirm("Upgrade to unlimited for just $7/month?")) window.location.href = "checkout.html";
+    return;
+  }
+  input.value = "";
+  input.style.height = "auto";
+  isLoading = true;
+  chatCount++;
+  localStorage.setItem("t2g_daily", chatCount);
+  updateUpgradeBar();
+  addMessage("user", text);
+  messages.push({ role: "user", content: text });
+  setTyping(true);
+  callAPI(messages).then(function(reply) {
+    messages.push({ role: "assistant", content: reply });
+    setTyping(false);
+    addMessage("god", reply);
+  }).catch(function() {
+    setTyping(false);
+    addMessage("god", "Something stirred in the connection. Please try again.");
+  }).finally(function() { isLoading = false; });
+}
+
+updateUpgradeBar();
+</script>
+</body>
+</html>
